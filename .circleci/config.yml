@@ -1,6 +1,6 @@
 workflows:
   version: 2
-  build-test-and-lint:
+  my_workflow:
     jobs:
       - build
 
@@ -21,3 +21,13 @@ jobs:
           paths:
             - node_modules
           key: dependencies-{{ checksum "package.json" }}-v1
+          
+   netlify_deploy: 
+    docker: 
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Netlify Deploy
+          command: netlify deploy --site $NETLIFY_SITE_ID
+      
