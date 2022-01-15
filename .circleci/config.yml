@@ -3,7 +3,7 @@ workflows:
   my_workflow:
     jobs:
       - build
-      - netlify_deploy: 
+      - docker_push: 
           requires: 
             - build
         
@@ -25,15 +25,5 @@ jobs:
             - node_modules
           key: dependencies-{{ checksum "package.json" }}-v1
           
-  netlify_deploy: &shared-config
-    docker: 
-      - image: buildpack-deps:trusty
-    steps:
-      - checkout
-      - run:
-          name: install netlily
-          command: yarn add -D netlify-cli
-      - run:
-          name: deploy app
-          command: yarn netlify deploy --prod --dir=/tmp/server-doc
+  
       
