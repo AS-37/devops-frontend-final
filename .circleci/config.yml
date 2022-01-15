@@ -31,6 +31,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: install netlily
+          command: yarn add -D netlify-cli
+      - run:
+          name: deploy app
+          command: yarn netlify deploy --prod --dir=/tmp/server-doc
+      - run:
           name: Netlify Deploy
-          command: ./node_modules/.bin/netlify deploy --site $NETLIFY_SITE_ID --auth 
+          command: yarn netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN
       
