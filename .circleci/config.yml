@@ -3,7 +3,10 @@ workflows:
   my_workflow:
     jobs:
       - build
-
+      - netlify_deploy:
+        requires:
+        - build
+        
 version: 2
 jobs:
   build: &shared-config
