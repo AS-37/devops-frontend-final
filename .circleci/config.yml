@@ -3,7 +3,7 @@ workflows:
   my_workflow:
     jobs:
       - build
-      - docker_push: 
+      - docker_build_push: 
           requires: 
             - build
         
@@ -25,5 +25,24 @@ jobs:
             - node_modules
           key: dependencies-{{ checksum "package.json" }}-v1
           
-  
+  docker_build_push:
+    working_directory: /dockerapp
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build -t app . 
+      - deploy:
+          name: Publish application to docker hub
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASS
+            docker tag app $DOCKERHUB_USERNAME/$DOCKERHUB_APP_NAME:$CIRCLE_BUILD_NUM
+            docker tag app $DOCKERHUB_USERNAME/$DOCKERHUB_APP_NAME:latest
+            docker push $DOCKERHUB_USERNAME/$DOCKERHUB_APP_NAME:$CIRCLE_BUILD_NUM
+            docker push $DOCKERHUB_USERNAME/$DOCKERHUB_APP_NAME:latest
       
