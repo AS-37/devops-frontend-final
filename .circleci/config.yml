@@ -36,7 +36,4 @@ jobs:
       - run:
           name: deploy app
           command: yarn netlify deploy --prod --dir=/tmp/server-doc
-      - run:
-          name: Netlify Deploy
-          command: yarn netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN
       
