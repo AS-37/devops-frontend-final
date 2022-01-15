@@ -25,7 +25,7 @@ jobs:
             - node_modules
           key: dependencies-{{ checksum "package.json" }}-v1
           
-  netlify_deploy: 
+  netlify_deploy: &shared-config
     docker: 
       - image: buildpack-deps:trusty
     steps:
